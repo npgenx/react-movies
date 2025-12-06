@@ -5,7 +5,8 @@ import MovieCard from './components/MovieCard.jsx'
 import { useDebounce } from 'react-use'
 import { getTrendingMovies, updateSearchCount } from './appwrite.js'
 
-const API_BASE_URL = 'https://api.themoviedb.org/3';
+
+const API_BASE_URL = import.meta.env.VITE_TMDB_API_BASE_URL;
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
@@ -26,6 +27,8 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [trendingMovies, setTrendingMovies] = useState([]);
+
+
 
   // Debounce the search term to prevent making too many API requests
   // by waiting for the user to stop typing for 500ms
@@ -70,12 +73,14 @@ const App = () => {
   const loadTrendingMovies = async () => {
     try {
       const movies = await getTrendingMovies();
-
+      console.log
       setTrendingMovies(movies);
     } catch (error) {
       console.error(`Error fetching trending movies: ${error}`);
     }
   }
+
+
 
   useEffect(() => {
     fetchMovies(debouncedSearchTerm);
@@ -83,6 +88,7 @@ const App = () => {
 
   useEffect(() => {
     loadTrendingMovies();
+
   }, []);
 
   return (
@@ -92,12 +98,12 @@ const App = () => {
       <div className="wrapper">
         <header>
           <img src="./hero.png" alt="Hero Banner" />
-          <h1>Find <span className="text-gradient">Movies</span> You'll Enjoy Without the Hassle</h1>
+          <h1>Find <span className="text-gradient">Movies</span> You&apos;ll Enjoy Without the Hassle</h1>
 
           <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </header>
 
-        {trendingMovies.length > 0 && (
+        {trendingMovies?.length > 0 && (
           <section className="trending">
             <h2>Trending Movies</h2>
 
